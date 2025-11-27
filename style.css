@@ -129,7 +129,7 @@ h4 { font-size: 1.6rem; }
 
 @keyframes subtle-glow {
     0% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1)); }
-    100% { filter: drop_shadow(0 0 15px rgba(255, 255, 255, 0.3)); }
+    100% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)); }
 }
 
 .hero .headline { margin-bottom: 20px; }
@@ -149,7 +149,10 @@ h4 { font-size: 1.6rem; }
     100% { background-position: 0% 50%; }
 }
 
-.hero .sub-headline, .contact h3 span.otro-nivel { 
+.hero .sub-headline, 
+.contact h3 span.otro-nivel,
+.carousel-item .level-title, /* APLICADO A LOS TÍTULOS DE LOS PAQUETES */
+.carousel-item .price-tag { /* APLICADO A LOS PRECIOS DE LOS PAQUETES */
     color: var(--color-red); 
     text-shadow: none; 
     
@@ -224,56 +227,131 @@ h4 { font-size: 1.6rem; }
     text-align: left; 
 }
 
-.service-cards {
+/* ========================================= */
+/* === CARRUSEL INFINITO (Servicios) === */
+/* ========================================= */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden; 
+    /* CORRECCIÓN: Padding vertical para el glow (30px arriba y abajo) */
+    padding: 30px 0; 
+    margin: 60px auto 0;
+    max-width: 900px; 
+}
+
+.carousel-track {
     display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-top: 60px;
-}
-@keyframes border-glow-constant {
-    0% { box-shadow: 0 0 5px rgba(227, 6, 19, 0.1), inset 0 0 5px rgba(227, 6, 19, 0.1); border-color: rgba(227, 6, 19, 0.2); }
-    50% { box-shadow: 0 0 10px rgba(227, 6, 19, 0.3), inset 0 0 10px rgba(227, 6, 19, 0.3); border-color: rgba(227, 6, 19, 0.5); }
-    100% { box-shadow: 0 0 5px rgba(227, 6, 19, 0.1), inset 0 0 5px rgba(227, 6, 19, 0.1); border-color: rgba(227, 6, 19, 0.2); }
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 }
 
-@keyframes border-move-highlight {
-    0% { transform: translateY(0) scale(1.02); box-shadow: 0 0 25px rgba(227, 6, 19, 0.6), inset 0 0 25px rgba(227, 6, 19, 0.4); border-color: var(--color-red); }
-    50% { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 35px rgba(227, 6, 19, 0.8), inset 0 0 35px rgba(227, 6, 19, 0.6); border-color: var(--color-red-light); }
-    100% { transform: translateY(0) scale(1.02); box-shadow: 0 0 25px rgba(227, 6, 19, 0.6), inset 0 0 25px rgba(227, 6, 19, 0.4); border-color: var(--color-red); }
-}
-
-.card {
-    flex: 1;
+.carousel-item {
+    flex: 0 0 33.3333%; 
+    padding: 0 15px; 
+    text-align: center;
+    cursor: pointer;
+    
     background-color: var(--color-dark);
     border: 1px solid rgba(247, 246, 244, 0.3); 
-    opacity: 0.9;
-    padding: 40px 25px;
+    opacity: 0.6; /* Tarjetas no seleccionadas */
+    padding-top: 40px;
+    padding-bottom: 40px;
     border-radius: 8px;
-    text-align: center;
     position: relative;
-    z-index: 1;
+    z-index: 10; 
     
-    animation: border-glow-constant 3s infinite alternate ease-in-out;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out; 
-}
-.service-cards:hover .card:not(:hover) {
-    opacity: 0.6; 
-    transform: scale(0.98); 
     animation: none; 
-    border-color: rgba(247, 246, 244, 0.1);
-    box-shadow: none;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out, border-color 0.5s ease-out, box-shadow 0.5s ease-out; 
 }
-.card:hover {
-    opacity: 1;
-    animation: border-move-highlight 1.5s infinite alternate ease-in-out; 
-    transform: scale(1.05); 
+
+/* CORRECCIÓN: Fuerza la opacidad del botón a 1 para que el hover funcione correctamente. */
+.carousel-item .secondary-cta {
+    opacity: 1; 
 }
-.card.active {
-    border-color: var(--color-red);
-    opacity: 1;
-    animation: border-move-highlight 1.5s infinite alternate ease-in-out; 
+/* FIN DE CORRECCIÓN */
+
+
+/* Estilos para el nuevo contenido */
+.carousel-item .category-tag {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-red);
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+.carousel-item .price-tag {
+    /* El estilo animado de color se toma de la regla superior */
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+/* CORRECCIÓN DE CORTE DE TEXTO */
+.carousel-item .description {
+    font-size: 0.9rem;
+    color: var(--color-light);
+    opacity: 0.7;
+    min-height: 70px; /* Se usa min-height para asegurar espacio, pero permite crecer */
+    height: auto; /* Permite que el contenido determine la altura */
+    overflow: visible; /* Asegura que todo el texto sea visible */
+    line-height: 1.6;
+    margin-bottom: 25px;
+    padding: 0 10px; 
+}
+/* FIN DE CORRECCIÓN */
+
+
+.carousel-item .secondary-cta {
+    margin-top: 20px;
+}
+
+.carousel-item.active {
+    opacity: 1; /* Tarjeta seleccionada */
     transform: scale(1.03); 
+    z-index: 20; 
+    border-color: var(--color-red);
+    animation: border-move-highlight 1.5s infinite alternate ease-in-out; 
+    box-shadow: 0 0 25px rgba(227, 6, 19, 0.6), inset 0 0 25px rgba(227, 6, 19, 0.4); 
 }
+
+/* Animaciones para las tarjetas */
+@keyframes border-move-highlight {
+    0% { transform: scale(1.03); box-shadow: 0 0 25px rgba(227, 6, 19, 0.6), inset 0 0 25px rgba(227, 6, 19, 0.4); border-color: var(--color-red); }
+    50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(227, 6, 19, 0.8), inset 0 0 35px rgba(227, 6, 19, 0.6); border-color: var(--color-red-light); }
+    100% { transform: scale(1.03); box-shadow: 0 0 25px rgba(227, 6, 19, 0.6), inset 0 0 25px rgba(227, 6, 19, 0.4); border-color: var(--color-red); }
+}
+
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(227, 6, 19, 0.7); 
+    color: var(--color-light);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%; 
+    width: 45px;
+    height: 45px;
+    line-height: 1;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 100; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-button:hover {
+    background-color: var(--color-red);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-button.prev { left: 10px; } 
+.carousel-button.next { right: 10px; }
+
 
 /* --- CONTACT SECTION --- */
 .contact {
@@ -298,7 +376,7 @@ h4 { font-size: 1.6rem; }
 
 
 /* ========================================= */
-/* === FIX: ANIMACIONES DE ENTRADA (REVEAL) === */
+/* === ANIMACIONES DE ENTRADA (REVEAL) === */
 /* ========================================= */
 
 .reveal {
@@ -324,7 +402,7 @@ h4 { font-size: 1.6rem; }
 
 
 /* ========================================= */
-/* === ANIMACIÓN DE PARTÍCULAS (FIXED) === */
+/* === ANIMACIÓN DE PARTÍCULAS === */
 /* ========================================= */
 .background-particles {
     position: absolute;
@@ -416,7 +494,7 @@ h4 { font-size: 1.6rem; }
 footer {
     padding: 20px 5%;
     background-color: var(--color-dark);
-    border-top: 1px solid var(--color-gray-dark);
+    border-top: 1px solid var(--color-gray);
     text-align: center;
     display: flex;
     justify-content: space-between;
@@ -427,7 +505,6 @@ footer {
 
 /* ================================== */
 /* === RESPONSIVE DESIGN (MÓVIL) === */
-/* (Mismos estilos de la versión anterior) */
 @media (max-width: 992px) {
     h1 { font-size: 3.5rem; }
     h2 { font-size: 2.2rem; }
@@ -456,7 +533,7 @@ footer {
 
     .hero-logo { width: 200px; margin-bottom: 20px; }
 
-    .method-grid, .service-cards {
+    .method-grid {
         flex-direction: column;
         gap: 30px;
     }
@@ -467,9 +544,38 @@ footer {
     }
     .method-step:last-child { border-bottom: none; }
 
-    .card {
+    /* Carrusel móvil: Muestra 1 card y botones más visibles */
+    .carousel-container {
+        max-width: 450px;
+        padding: 30px 10px; /* Mantiene el padding vertical y ajusta el horizontal */
+    }
+    .carousel-item {
+        flex: 0 0 100%; 
+        max-width: 100%;
+        margin: 0;
         padding: 30px 20px;
     }
+    .carousel-item.active {
+        transform: scale(1);
+    }
+
+    /* CORRECCIÓN DE TEXTO EN MÓVIL */
+    .carousel-item .description {
+        min-height: auto;
+        height: auto; /* Desactiva la altura mínima fija en móvil para mostrar todo el texto */
+        margin-bottom: 15px;
+    }
+    /* FIN DE CORRECCIÓN */
+
+    .carousel-button {
+        display: block;
+        padding: 8px 12px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+    .carousel-button.prev { left: 0px; }
+    .carousel-button.next { right: 0px; }
     
     .bg-gradient-metodologia {
         width: 400px;
